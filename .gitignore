@@ -8,6 +8,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+venv/
 build/
 develop-eggs/
 dist/
@@ -39,6 +40,9 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
+pylint.out
+pep8.out
+junit*.xml
 
 # Translations
 *.mo
@@ -52,3 +56,6 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# OWNSTUFF
+config.yml

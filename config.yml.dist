@@ -1,0 +1,5 @@
+xsteadfastx_org:
+    server: myserver.org
+    user: myuser
+    password: mypassword
+    destination: localbackupdir
