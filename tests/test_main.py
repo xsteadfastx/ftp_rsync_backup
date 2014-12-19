@@ -8,7 +8,8 @@ import mock
 from ftp_rsync_backup import (
     build_command_list,
     run_backup,
-    from_file)
+    from_file,
+    main)
 
 
 @pytest.fixture
@@ -179,3 +180,38 @@ def test_from_file(subprocess, config_file, mountpoint):
 
     with open(logfile) as open_logfile:
         assert open_logfile.readlines()[0] == 'Exit Code: 1'
+
+
+@mock.patch('ftp_rsync_backup.find_executable')
+@mock.patch('ftp_rsync_backup.subprocess')
+def test_main_function(subprocess, find_executable, config_file, capsys):
+    """main function works as expected.
+    """
+    # set arguments
+    arguments = {
+        '--file': True,
+        '--help': False,
+        '-f': False,
+        '-h': False,
+        '<config>': '{}'.format(config_file)}
+
+    # mocking
+    find_executable.return_value = None
+    subprocess.Popen.return_value.returncode = 0
+
+    # run main
+    main(arguments)
+
+    # read stdout and stderr
+    out, err = capsys.readouterr()
+
+    assert out == 'Please install rsync and curlftpfs\n'
+
+    # mock again
+    find_executable.return_value = '/usr/bin/rsync'
+
+    # run main
+    main(arguments)
+
+    # testing if subprocess got called 3 times
+    assert subprocess.Popen.call_count == 3

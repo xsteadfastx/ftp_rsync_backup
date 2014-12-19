@@ -3,6 +3,8 @@ Usage:
     ftp_rsync_backup.py -f <config> | --file <config>
     ftp_rsync_backup.py -h | --help
 """
+from __future__ import print_function
+
 import subprocess
 import tempfile
 import yaml
@@ -100,10 +102,16 @@ def from_file(arguments, mountpoint=tempfile.mkdtemp()):
             pass
 
 
-if __name__ == '__main__':
+def main(arguments):
+    """main function.
+    """
     if find_executable('curlftpfs') and find_executable('rsync'):
-        ARGUMENTS = docopt(__doc__)
-        if ARGUMENTS['--file'] or ARGUMENTS['-f']:
-            from_file(ARGUMENTS)
+        if arguments['--file'] or arguments['-f']:
+            from_file(arguments)
     else:
         print('Please install rsync and curlftpfs')
+
+
+if __name__ == '__main__':
+    ARGUMENTS = docopt(__doc__)
+    main(ARGUMENTS)
